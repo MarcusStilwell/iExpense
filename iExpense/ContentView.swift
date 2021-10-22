@@ -20,6 +20,7 @@ class Expenses: ObservableObject {
 
 struct ContentView: View {
     
+    @State private var showingAddExpense = false
     @ObservedObject var expenses = Expenses()
     
     func removeItems(at offsets: IndexSet) {
@@ -36,13 +37,15 @@ struct ContentView: View {
             }
             .navigationBarItems(trailing:
                 Button(action: {
-                    let expense = ExpenseItem(name: "Test", type: "Personal", amount: 5)
-                    self.expenses.items.append(expense)
+                    self.showingAddExpense = true
                 }) {
                     Image(systemName: "plus")
                 }
             )
             .navigationBarTitle("iExpense")
+        }
+        .sheet(isPresented: $showingAddExpense){
+            AddView(expenses: self.expenses)
         }
     }
 }
