@@ -13,18 +13,26 @@ class User: ObservableObject{
 }
 
 struct ContentView: View {
-    @ObservedObject var user = User()
+    @State private var showingSheet = false
 
     var body: some View {
         Button("Show Sheet") {
-            // show the sheet
+            self.showingSheet.toggle()
+        }
+        .sheet(isPresented: $showingSheet) {
+            SecondView(name: "Marcus")
         }
     }
 }
 
 struct SecondView: View {
+    var name: String
+    @Environment(\.presentationMode) var presentationMode
+
     var body: some View {
-        Text("Second View")
+        Button("Dismiss") {
+            self.presentationMode.wrappedValue.dismiss()
+        }
     }
 }
 
